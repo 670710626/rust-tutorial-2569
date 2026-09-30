@@ -84,11 +84,10 @@ Rust ไม่มี Class Inheritance แต่ใช้แนวคิด comp
 เมื่อเปรียบเทียบกับภาษาอื่น จะมีการทำ Generics ต่างกัน เช่น `Rust` ใช้ Monomorphization ร่วมกับ trait bound ที่ประกาศชัดเจน ไม่มีต้นทุนขณะรัน แต่ `C++` ใช้ templates ซึ่งให้ประสิทธิภาพใกล้เคียงกัน แต่เดิมตรวจเงื่อนไขแบบโดยนัยตอน instantiate (ปัจจุบันมี Concepts ใน C++20 ช่วย) ในขณะที่ `Java` ใช้ type erasure ลบข้อมูลชนิดทิ้งหลัง compile ทำให้ต้องใช้ boxing และ cast ขณะรัน หรือ `C#` ใช้ reified generics คือคงข้อมูลชนิดไว้ขณะรัน มีต้นทุนเล็กน้อย และ `Python` เป็นภาษา dynamically typed จึงไม่ต้องใช้ generics เพื่อให้โค้ดรับได้หลายชนิด ใช้ duck typing เป็นหลัก และมี generics เพียงในระดับ type hint ที่ให้เครื่องมืออย่าง mypy ตรวจสอบ ตัวภาษาเองไม่บังคับและ type hint ถูกละเว้นขณะรัน ข้อผิดพลาดด้านชนิดจึงเกิดขณะรัน และทุกการเรียกเป็น dynamic dispatch จึงมีต้นทุนขณะรันสูงกว่า เป็นต้น`
 
 ### 9.6 Why Rust?
-`1. รองรับการสร้างโค้ดที่มีประสิทธิภาพ : Generics ของ Rust ใช้ Monomorphization ทำให้ Generic Code สามารถถูก specialize ตั้งแต่ Compile Time และหลีกเลี่ยง Runtime Generic Dispatch ในกรณีดังกล่าว`
-`2. Generics ผสานกับ ownership และ lifetime ในระบบเดียว : Type parameter, trait bound และ lifetime อยู่ในกลไกเดียวกัน เช่น T: Send + 'static บอกทั้งความปลอดภัยเมื่อใช้ข้ามเธรดและอายุของข้อมูลในบรรทัดเดียว`
-`3. Signature เป็นสัญญาที่ตรวจสอบได้ : อ่านเพียงหัวฟังก์ชันก็ทราบว่าชนิดที่ส่งเข้ามาต้องมีความสามารถอะไร ผู้ใช้ไม่ต้องอ่าน body และ compiler รับประกันว่า body ไม่ใช้ความสามารถเกินที่ประกาศ`
-`4. Zero-cost abstraction : เขียนโค้ดระดับสูง เช่น iterator chain ได้โดยไม่เสียประสิทธิภาพเมื่อเทียบกับการเขียนระดับต่ำด้วยมือ จึงเหมาะกับ systems programming ที่ต้องการทั้งควบคุมทรัพยากรและโค้ดที่ดูแลง่าย`
-`5. ไม่ต้องพึ่ง garbage collector : Rust ใช้ Ownership, Borrowing และ Drop โดยไม่ต้องพึ่ง Garbage Collector เพราะการไม่มี GC เป็นเรื่องของระบบ Resource Management ไม่ใช่ Generics โดยตรง`
+1. Compiler สามารถตรวจสอบ Type Parameter และ Trait Bound ตั้งแต่ Compile Time ทำให้การใช้ Generic Type ต้องเป็นไปตามข้อกำหนดที่ประกาศไว้
+2. Trait Bound ทำให้ Generic Function ระบุความสามารถที่ Type ต้องมีไว้อย่างชัดเจนใน Function Signature และ Compiler สามารถตรวจสอบการใช้งานภายใน Function ตามข้อกำหนดนั้น
+3. Rust ใช้ Monomorphization ในการ Compile Generic Code โดยสร้าง Code สำหรับ Concrete Type ที่นำมาใช้ ทำให้ไม่จำเป็นต้องจัดการ Generic Type แบบ Dynamic ใน Runtime ในกรณีที่ใช้วิธีนี้
+4. Rust ออกแบบ Generics และ Traits ให้สามารถใช้ Abstraction ได้โดยไม่จำเป็นต้องเพิ่ม Runtime Overhead ที่ไม่จำเป็น เมื่อ Compiler สามารถสร้าง Code ที่เหมาะสมได้
 
 ---
 
