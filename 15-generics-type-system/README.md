@@ -268,7 +268,7 @@ impl NotificationBroadcaster {
 วิเคราะห์ Topic นี้ในมุมมองของ Programming Languages
 
 ### 9.1 Syntax
-`Rust ใช้ `<T>` ประกาศ Type Parameter ได้ที่ function, struct, enum, method, trait เพื่อให้รองรับได้หลาย Type กล่าวได้ว่าภาษานี้ออกแบบ Syntax รองรับ Parametric Polymorphism โดยให้ระบุ Type Parameter ผ่าน syntax และกำหนดข้อจำกัดผ่าน Trait Bounds`
+`Rust ใช้ <T> ประกาศ Type Parameter ได้ที่ function, struct, enum, method, trait เพื่อให้รองรับได้หลาย Type กล่าวได้ว่าภาษานี้ออกแบบ Syntax รองรับ Parametric Polymorphism โดยให้ระบุ Type Parameter ผ่าน syntax และกำหนดข้อจำกัดผ่าน Trait Bounds`
 ```rust
 fn compare<T: PartialOrd>(a: T, b: T) -> bool {
     a > b
@@ -306,7 +306,7 @@ fn largest<T: PartialOrd + Copy>(xs: &[T]) -> T { ... }
 ### 9.5 Abstraction / Other PPL Concepts
 `การ Abstraction ทำผ่าน trait ซึ่งกำหนดว่าชนิดข้อมูลหนึ่งสามารถทำอะไรได้ โดยไม่ระบุว่าเก็บข้อมูลอย่างไร ทำให้แยกพฤติกรรมออกจากข้อมูลได้อย่างชัดเจน นอกจากนี้ยังสามารถเพิ่มการ implement trait ให้กับชนิดที่มีอยู่แล้วภายหลังภายใต้ orphan rule ได้อีกด้วย ต่างจากภาษาเชิงวัตถุแบบดั้งเดิมที่ต้องประกาศความสัมพันธ์ไว้ตั้งแต่ตอนนิยามคลาส
 Rust ไม่มี Class Inheritance แต่ใช้แนวคิด composition และ trait แทน คือ สร้างความสามารถใหม่จากการประกอบชนิดข้อมูลเข้าด้วยกัน และกำหนดพฤติกรรมร่วมผ่าน trait จึงหลีกเลี่ยงปัญหาที่พบในระบบสืบทอดได้
-เมื่อเปรียบเทียบกับภาษาอื่น จะมีการทำ Generics ต่างกัน เช่น `Rust` ใช้ Monomorphization ร่วมกับ trait bound ที่ประกาศชัดเจน ไม่มีต้นทุนขณะรัน แต่ `C++` ใช้ templates ซึ่งให้ประสิทธิภาพใกล้เคียงกัน แต่เดิมตรวจเงื่อนไขแบบโดยนัยตอน instantiate (ปัจจุบันมี Concepts ใน C++20 ช่วย) ในขณะที่ `Java` ใช้ type erasure ลบข้อมูลชนิดทิ้งหลัง compile ทำให้ต้องใช้ boxing และ cast ขณะรัน หรือ `C#` ใช้ reified generics คือคงข้อมูลชนิดไว้ขณะรัน มีต้นทุนเล็กน้อย และ `Python` เป็นภาษา dynamically typed จึงไม่ต้องใช้ generics เพื่อให้โค้ดรับได้หลายชนิด ใช้ duck typing เป็นหลัก และมี generics เพียงในระดับ type hint ที่ให้เครื่องมืออย่าง mypy ตรวจสอบ ตัวภาษาเองไม่บังคับและ type hint ถูกละเว้นขณะรัน ข้อผิดพลาดด้านชนิดจึงเกิดขณะรัน และทุกการเรียกเป็น dynamic dispatch จึงมีต้นทุนขณะรันสูงกว่า เป็นต้น`
+เมื่อเปรียบเทียบกับภาษาอื่น จะมีการทำ Generics ต่างกัน เช่น Rust ใช้ Monomorphization ร่วมกับ trait bound ที่ประกาศชัดเจน ไม่มีต้นทุนขณะรัน แต่ C++ ใช้ templates ซึ่งให้ประสิทธิภาพใกล้เคียงกัน แต่เดิมตรวจเงื่อนไขแบบโดยนัยตอน instantiate (ปัจจุบันมี Concepts ใน C++20 ช่วย) ในขณะที่ Java ใช้ type erasure ลบข้อมูลชนิดทิ้งหลัง compile ทำให้ต้องใช้ boxing และ cast ขณะรัน หรือ C# ใช้ reified generics คือคงข้อมูลชนิดไว้ขณะรัน มีต้นทุนเล็กน้อย และ Python เป็นภาษา dynamically typed จึงไม่ต้องใช้ generics เพื่อให้โค้ดรับได้หลายชนิด ใช้ duck typing เป็นหลัก และมี generics เพียงในระดับ type hint ที่ให้เครื่องมืออย่าง mypy ตรวจสอบ ตัวภาษาเองไม่บังคับและ type hint ถูกละเว้นขณะรัน ข้อผิดพลาดด้านชนิดจึงเกิดขณะรัน และทุกการเรียกเป็น dynamic dispatch จึงมีต้นทุนขณะรันสูงกว่า เป็นต้น`
 
 ### 9.6 Why Rust?
 1. Compiler สามารถตรวจสอบ Type Parameter และ Trait Bound ตั้งแต่ Compile Time ทำให้การใช้ Generic Type ต้องเป็นไปตามข้อกำหนดที่ประกาศไว้
