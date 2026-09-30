@@ -291,11 +291,25 @@ fn compare<T: PartialOrd>(a: T, b: T) -> bool {
 `ระบบชนิดข้อมูลของ Rust รวม Parametric Polymorphism เข้ากับ Bounded Polymorphism ผ่าน trait โดยกำหนดให้ความสามารถของ type parameter ต้องถูกประกาศอย่างชัดเจนและ Compiler ใช้ Trait Bound ที่ประกาศไว้ในการตรวจสอบการดำเนินการกับ Type Parameter และตรวจสอบว่า Concrete Type ที่นำมาใช้ตรงตามข้อกำหนดใน Compile Time (การดำเนินการกับค่าของ Type Parameter ต้องระบุ Trait Bound จึงจะใช้ตัวดำเนินการเปรียบเทียบได้) ส่งผลให้ได้ทั้งความปลอดภัยของชนิดข้อมูลและสัญญาที่อ่านได้จาก signature โดยไม่ต้องพึ่งการตรวจสอบขณะรันโปรแกรม กล่าวคือ ฟังก์ชันหรือโครงสร้างข้อมูลชนิดหนึ่งสามารถนิยามครั้งเดียวแต่ใช้งานได้กับหลายชนิดข้อมูล`
 ##### Parametric Polymorphism โดยโค้ดเดียวใช้ได้กับหลายชนิดและมีพฤติกรรมเดียวกัน
 ```rust
-fn id<T>(x: T) -> T { x }
+fn identity<T>(value: T) -> T {
+    value
+}
+
+fn main() {
+    println!("{}", identity(10));
+    println!("{}", identity(3.14));
+}
 ```
 ##### Bounded Polymorphism เมื่อดำเนินการโดยถูกจำกัดด้วย Trait Bound
 ```rust
-fn largest<T: PartialOrd + Copy>(xs: &[T]) -> T { ... }
+fn compare<T: PartialOrd>(a: T, b: T) -> bool {
+    a > b
+}
+
+fn main() {
+    println!("{}", compare(10, 5));
+    println!("{}", compare(3.5, 2.5));
+}
 ```
 
 ### 9.4 Memory / Resource Management
