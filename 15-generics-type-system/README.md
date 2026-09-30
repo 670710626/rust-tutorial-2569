@@ -14,7 +14,7 @@
 | 1 | นายณัฐวุฒิ โตเมือง | 670710623 | `@[กรอก GitHub username]` | Concept + Short Code Illustration (สรุปแนวคิดหลัก + โค้ดตัวอย่างสั้น) |
 | 2 | นางสาวณัฐสุดา ลานตวน | 670710624 | `@[กรอก GitHub username]` | Detailed Code + Live Demo (โค้ดเชิงลึก + สาธิตสด) |
 | 3 | นางสาวณัฐสุรางค์ ชาติทองคำ | 670710625 | `@670710625` | Rust vs Other Language + PPL Analysis (เปรียบเทียบภาษา + วิเคราะห์เชิง PPL) |
-| 4 | นายธนเทพ นาสวน | 670710626 | `@[กรอก GitHub username]` | Exercises + Common Mistakes + Challenge (แบบฝึกหัด + ข้อผิดพลาดที่พบบ่อย + คำถามท้าทาย) |
+| 4 | นายธนเทพ นาสวน | 670710626 | `@670710626` | Exercises + Common Mistakes + Challenge (แบบฝึกหัด + ข้อผิดพลาดที่พบบ่อย + คำถามท้าทาย) |
 
 > แก้ไข GitHub Username ของแต่ละคนให้ตรงกับบัญชีจริงก่อนเริ่มทำงาน (ผู้สอนจะใช้คอลัมน์นี้เชิญเป็น collaborator ของ repository)
 
@@ -36,6 +36,220 @@
 `[เขียนเนื้อหาที่นี่ — ใช้โครงสร้างเดียวกับ rust_tutorial_template.md ฉบับเต็มที่ผู้สอนแจกให้]`
 
 ---
+
+## 7. Common Mistakes
+
+### Mistake 1 — การคำนวณหรือเปรียบเทียบค่าบน Generic Type โดยไม่มี Trait Bounds
+
+**Problem**
+
+ผู้เริ่มต้นเขียน Rust มักคุ้นชินกับ Template ใน C++ ที่คอมไพเลอร์ยอมให้เขียนตัวดำเนินการคณิตศาสตร์ได้โดยตรง แต่ในภาษา Rust หากไม่ระบุ Trait Bound คอมไพเลอร์จะปฏิเสธการคอมไพล์ทันที
+
+**Incorrect Code**
+
+```rust
+// คอมไพล์ไม่ผ่าน!
+fn add_numbers<T>(a: T, b: T) -> T {
+    a + b // ERROR: cannot add `T` to `T`
+}
+```
+
+**Correct Code**
+
+```rust
+use std::ops::Add;
+
+// ระบุ Trait Bound ว่า T ต้อง Implement std::ops::Add
+fn add_numbers<T>(a: T, b: T) -> T
+where
+    T: Add<Output = T>,
+{
+    a + b
+}
+```
+
+**Why?**
+
+ภาษา Rust ใช้ระบบตรวจสอบแบบ Nominal Contract Enforcement at Definition Site (การบังคับตรวจสัญญาความถูกต้องตามชื่อชนิดข้อมูล ณ จุดนิยามฟังก์ชัน เพื่อดักจับข้อผิดพลาดทั้งหมดตั้งแต่ขั้นตอนคอมไพล์โดยไม่รอให้เกิดการเรียกใช้จริง) หมายความว่าคอมไพเลอร์จะตรวจสอบความถูกต้องของตัวฟังก์ชันทันทีที่ประกาศ โดยไม่รอให้มีการเรียกใช้งานจริง หากฟังก์ชันไม่ระบุว่า `T` ทำการ Implement Trait `Add` คอมไพเลอร์จะไม่ยอมให้คอมไพล์เด็ดขาด เพื่อป้องกันความผิดพลาดขณะรันไทม์
+
+---
+
+### Mistake 2 — การฝ่าฝืนกฎ Object Safety เมื่อสร้าง Trait Object
+
+**Problem**
+
+พยายามใช้คีย์เวิร์ด `dyn Trait` (Trait Object สำหรับ Dynamic Dispatch) กับ Trait ที่มี Method คืนค่าเป็น `Self` หรือมี Generic Type Parameters ในตัว Method ส่งผลให้คอมไพเลอร์แจ้งข้อผิดพลาด `the trait cannot be made into an object`
+
+**Incorrect Code**
+
+```rust
+pub trait Transformer {
+    fn transform<U>(&self, input: U); // ผิดกฎ: Method มี Generic Parameter
+    fn duplicate(&self) -> Self;       // ผิดกฎ: คืนค่าเป็น Self
+}
+
+// ERROR: the trait `Transformer` cannot be made into an object
+// let obj: Box<dyn Transformer>;
+```
+
+**Correct Code**
+
+```rust
+pub trait SafeTransformer {
+    fn transform_str(&self, input: &str) -> String;
+}
+
+// ใช้งานผ่าน Trait Object ได้อย่างถูกต้อง
+let obj: Box<dyn SafeTransformer>;
+```
+
+**Why?**
+
+ตามหลักการของตารางฟังก์ชันเสมือน (Vtable) ตัวคอมไพเลอร์ต้องทราบขนาดของ Offset และ Function Pointer ที่แน่นอนล่วงหน้าตั้งแต่ตอนคอมไพล์ หาก Method มี Generic Parameter หรือมีการคืนค่าเป็น `Self` ตัวคอมไพเลอร์จะไม่สามารถทราบขนาดข้อมูลและจำนวนช่องฟังก์ชันในตาราง Vtable ที่แน่นอนได้ จึงต้องปฏิเสธการคอมไพล์เพื่อรักษาความปลอดภัยของหน่วยความจำ
+
+---
+
+## 8. Exercises
+
+### Exercise 1 — Generic Key-Value Cache with Capacity & Eviction
+
+**Problem**
+
+จงออกแบบและเขียนโค้ดโครงสร้างข้อมูล `SimpleCache<K, V>` ที่เป็น Generic รองรับ Key ชนิดใดก็ได้ที่สามารถเปรียบเทียบความเท่ากันได้ (`PartialEq + Display`) และ Value ชนิดใดก็ได้ที่สามารถคัดลอกและแสดงผลได้ (`Clone + Display`) โดยให้มี Method `put(key, value)` (เพิ่มหรืออัปเดตข้อมูล) และ `get(&key)` (ค้นหาและอ่านข้อมูล) พร้อมระบุความจุสูงสุด (Capacity)
+
+**Hint**
+
+ใช้ `Vec<CacheEntry<K, V>>` และกำหนด Trait Bounds บน `impl<K, V> SimpleCache<K, V> where K: PartialEq + Display, V: Clone + Display`
+
+**Solution**
+
+```rust
+use std::fmt::Display;
+
+#[derive(Debug, Clone)]
+pub struct CacheEntry<K, V> {
+    pub key: K,
+    pub value: V,
+    pub access_count: usize,
+}
+
+pub struct SimpleCache<K, V> {
+    entries: Vec<CacheEntry<K, V>>,
+    capacity: usize,
+}
+
+impl<K, V> SimpleCache<K, V>
+where
+    K: PartialEq + Display,
+    V: Clone + Display,
+{
+    pub fn new(capacity: usize) -> Self {
+        Self {
+            entries: Vec::new(),
+            capacity,
+        }
+    }
+
+    pub fn put(&mut self, key: K, value: V) {
+        for entry in &mut self.entries {
+            if entry.key == key {
+                entry.value = value;
+                entry.access_count += 1;
+                return;
+            }
+        }
+        if self.entries.len() >= self.capacity {
+            self.entries.remove(0); // ลบตัวเก่าสุดออกเมื่อเต็มตามนโยบาย FIFO
+        }
+        self.entries.push(CacheEntry {
+            key,
+            value,
+            access_count: 1,
+        });
+    }
+
+    pub fn get(&mut self, key: &K) -> Option<V> {
+        for entry in &mut self.entries {
+            if &entry.key == key {
+                entry.access_count += 1;
+                return Some(entry.value.clone());
+            }
+        }
+        None
+    }
+}
+```
+
+**Explanation**
+
+โครงสร้างนี้แสดงการประยุกต์ใช้ Parametric Polymorphism ร่วมกับ Trait Bounds และหลักการออกแบบซอฟต์แวร์:
+1. `#[derive(Debug, Clone)]`: Macro สั่งให้คอมไพเลอร์สร้าง Implementation สำหรับแสดงผลและคัดลอกข้อมูลให้อัตโนมัติ
+2. `CacheEntry<K, V>`: แยกการเก็บข้อมูลออกจากพฤติกรรม (Data-Behavior Separation)
+3. การใช้ `usize`: ตัวแปร `access_count` และ `capacity` ใช้ชนิดข้อมูล `usize` ซึ่งเป็นชนิดตัวเลขจำนวนเต็มบวกมาตรฐานสำหรับดัชนีและขนาดหน่วยความจำในภาษา Rust ช่วยป้องกันปัญหาค่าติดลบได้อย่างสมบูรณ์
+4. หลัก Encapsulation: ฟิลด์ `entries` และ `capacity` ไม่ได้ใส่ `pub` ทำให้เป็น Private ป้องกันการแก้ไขโดยตรงจากภายนอก บังคับให้เรียกผ่านเมธอด `put()` และ `get()` เท่านั้น
+5. Trait Bounds:
+   - `K: PartialEq`: เพื่อเปรียบเทียบ `entry.key == key` ได้
+   - `K: Display`: เพื่อแสดงผล Key ออกทางหน้าจอ
+   - `V: Clone`: เพื่อให้ `get()` สามารถส่งสำเนาข้อมูลออกไปได้โดยไม่แย่ง Ownership ของข้อมูลในแคช
+   - `V: Display`: เพื่อแสดงผล Value ออกทางหน้าจอ
+
+---
+
+### Exercise 2 — Polymorphic Notification Engine
+
+**Problem**
+
+จงออกแบบระบบส่งการแจ้งเตือนที่มี Trait `Notifier` ซึ่งมี method `channel_name(&self) -> &'static str` และ `send(&self, recipient: &str, message: &str) -> Result<(), String>` จากนั้นสร้าง Struct สำหรับ `EmailNotifier`, `SmsNotifier`, และ `DiscordWebhookNotifier` พร้อมทั้ง:
+1. เขียนฟังก์ชัน `send_urgent_static<N: Notifier>` สำหรับส่งด่วนด้วย Static Dispatch (Early Binding)
+2. เขียน Struct `NotificationBroadcaster` ที่เก็บ `Vec<Box<dyn Notifier>>` สำหรับกระจายข้อความทุกช่องทางแบบ Dynamic Dispatch (Late Binding)
+
+**Hint**
+
+สำหรับส่วน Dynamic Dispatch ให้ใช้ Vector เก็บ `Box<dyn Notifier>` และวนลูปเรียก `channel.send(...)`
+
+**Solution**
+
+```rust
+pub trait Notifier {
+    fn channel_name(&self) -> &'static str;
+    fn send(&self, recipient: &str, message: &str) -> Result<(), String>;
+}
+
+// 1. Static Dispatch (Early Binding / Monomorphization)
+pub fn send_urgent_static<N: Notifier>(notifier: &N, recipient: &str, alert: &str) {
+    let _ = notifier.send(recipient, alert);
+}
+
+// 2. Dynamic Dispatch (Late Binding / Trait Objects)
+pub struct NotificationBroadcaster {
+    channels: Vec<Box<dyn Notifier>>,
+}
+
+impl NotificationBroadcaster {
+    pub fn new() -> Self {
+        Self { channels: Vec::new() }
+    }
+
+    pub fn register_channel(&mut self, ch: Box<dyn Notifier>) {
+        self.channels.push(ch);
+    }
+
+    pub fn broadcast(&self, recipient: &str, msg: &str) {
+        for ch in &self.channels {
+            let _ = ch.send(recipient, msg);
+        }
+    }
+}
+```
+
+**Explanation**
+
+แบบฝึกหัดนี้แสดงถึงการตัดสินใจเชิงสถาปัตยกรรมภาษาโปรแกรม:
+1. Static Dispatch (`send_urgent_static`): คอมไพเลอร์ทำ Monomorphization และ Inlining ทำให้เรียกคำสั่งตรงโดยไม่มี Overhead ของตาราง Vtable เหมาะสำหรับงานที่ต้องการประสิทธิภาพและความเร็วสูงสุด
+2. Dynamic Dispatch (`NotificationBroadcaster`): ใช้ Trait Object `Box<dyn Notifier>` ร่วมกับ Heterogeneous Collection ทำให้สามารถรวบรวมช่องทางแจ้งเตือนต่างชนิดกันไว้ใน Vector เดียวกันได้ เหมาะสำหรับระบบที่ต้องการความยืดหยุ่นในการขยายโมดูลขณะรันไทม์
+
+---
+
 ## 9. PPL Perspective
 
 >**ส่วนนี้เป็นหัวใจของรายวิชา Principles of Programming Languages**
