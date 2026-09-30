@@ -250,6 +250,17 @@ impl NotificationBroadcaster {
 
 ---
 
+### Challenge — คำถามท้าทาย (Challenge Question)
+
+**Question:**  
+หากเราสร้างฟังก์ชันแบบ Generic ขึ้นมา 1 ฟังก์ชัน แต่ในระบบจริงมีการเรียกใช้งานฟังก์ชันนี้ด้วยชนิดข้อมูล (Concrete Types) ที่แตกต่างกันถึง 100 ชนิด จะส่งผลกระทบต่อประสิทธิภาพการทำงาน (Runtime Performance) และขนาดของไฟล์โปรแกรม (.exe / Binary Size) อย่างไร?
+
+**Answer:**  
+1. **ด้านความเร็ว (Runtime Performance):** ยังคงทำงานด้วยความเร็วสูงสุดระดับ Zero-Cost Abstraction เท่าเดิม เพราะคอมไพเลอร์สร้าง Machine Code แบบ Direct Call เฉพาะทางสำหรับแต่ละ Type ล่วงหน้า
+2. **ด้านขนาดไฟล์ (Binary Size):** ขนาดของไฟล์โปรแกรมจะขยายใหญ่ขึ้นอย่างมีนัยสำคัญ (เรียกว่าปรากฏการณ์ **Code Bloat**) เนื่องจากกลไก Monomorphization จะโคลนและคอมไพล์โค้ดเครื่องออกมาถึง 100 ชุดตามจำนวน Type ที่เรียกใช้จริง
+
+---
+
 ## 9. PPL Perspective
 
 >**ส่วนนี้เป็นหัวใจของรายวิชา Principles of Programming Languages**
