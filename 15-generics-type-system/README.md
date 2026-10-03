@@ -12,7 +12,7 @@
 | # | Name | Student ID | GitHub Username | Main Responsibility |
 |---|---|---|---|---|
 | 1 | นายณัฐวุฒิ โตเมือง | 670710623 | `@670710623` | Concept + Short Code Illustration (สรุปแนวคิดหลัก + โค้ดตัวอย่างสั้น) |
-| 2 | นางสาวณัฐสุดา ลานตวน | 670710624 | `@[กรอก GitHub username]` | Detailed Code + Live Demo (โค้ดเชิงลึก + สาธิตสด) |
+| 2 | นางสาวณัฐสุดา ลานตวน | 670710624 | `@670710624` | Detailed Code + Live Demo (โค้ดเชิงลึก + สาธิตสด) |
 | 3 | นางสาวณัฐสุรางค์ ชาติทองคำ | 670710625 | `@670710625` | Rust vs Other Language + PPL Analysis (เปรียบเทียบภาษา + วิเคราะห์เชิง PPL) |
 | 4 | นายธนเทพ นาสวน | 670710626 | `@670710626` | Exercises + Common Mistakes + Challenge (แบบฝึกหัด + ข้อผิดพลาดที่พบบ่อย + คำถามท้าทาย) |
 
