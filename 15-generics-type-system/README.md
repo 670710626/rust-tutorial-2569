@@ -260,9 +260,8 @@ fn main() {
 | `T: Trait`            | กำหนดว่า Generic Type `T` ต้องมี Trait ที่ระบุ                 | `fn print<T: Display>(value: T)`         |
 | `where T: ...`        | ใช้เขียน Trait Bound แยกออกจากส่วนหัวของ Function              | `fn check<T>(value: T) where T: Display` |
 | `#[derive(...)]`      | ให้ Compiler สร้าง Implementation ของ Trait บางตัวให้อัตโนมัติ | `#[derive(Debug)]`                       |
-| `impl Trait` | ใช้ระบุ Trait ที่ Type ต้องสามารถใช้งานได้ หรือใช้เป็น Opaque Type ในบางบริบท | `fn make() -> impl Display` |
-| `dyn Trait` | ใช้สร้าง Trait Object สำหรับ Dynamic Dispatch | `let x: &dyn Display` |
-
+| `impl Trait` | ใช้ระบุ Trait ที่ Type ต้อง Implement โดยใน Return Position สามารถใช้เป็น Opaque Type ได้ | `fn make() -> impl Display` |
+| `dyn Trait` | ใช้สร้าง Trait Object สำหรับ Dynamic Dispatch | `let value = 10; let x: &dyn Display = &value;` |
 
 ### Important Rules
 
