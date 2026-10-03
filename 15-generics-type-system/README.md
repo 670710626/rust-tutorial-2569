@@ -11,7 +11,7 @@
 
 | # | Name | Student ID | GitHub Username | Main Responsibility |
 |---|---|---|---|---|
-| 1 | นายณัฐวุฒิ โตเมือง | 670710623 | `@[กรอก GitHub username]` | Concept + Short Code Illustration (สรุปแนวคิดหลัก + โค้ดตัวอย่างสั้น) |
+| 1 | นายณัฐวุฒิ โตเมือง | 670710623 | `@670710623` | Concept + Short Code Illustration (สรุปแนวคิดหลัก + โค้ดตัวอย่างสั้น) |
 | 2 | นางสาวณัฐสุดา ลานตวน | 670710624 | `@[กรอก GitHub username]` | Detailed Code + Live Demo (โค้ดเชิงลึก + สาธิตสด) |
 | 3 | นางสาวณัฐสุรางค์ ชาติทองคำ | 670710625 | `@670710625` | Rust vs Other Language + PPL Analysis (เปรียบเทียบภาษา + วิเคราะห์เชิง PPL) |
 | 4 | นายธนเทพ นาสวน | 670710626 | `@670710626` | Exercises + Common Mistakes + Challenge (แบบฝึกหัด + ข้อผิดพลาดที่พบบ่อย + คำถามท้าทาย) |
@@ -24,16 +24,256 @@
 
 หลังจากศึกษา Topic นี้แล้ว ผู้เรียนสามารถ:
 
-1. `[อธิบายแนวคิดสำคัญได้]`
-2. `[เขียนโปรแกรม Rust ที่เกี่ยวข้องได้]`
-3. `[วิเคราะห์พฤติกรรม/กฎของภาษาได้]`
-4. `[เปรียบเทียบ Rust กับภาษาอื่นได้]`
+1. อธิบายแนวคิดของ Generics และ Generic Type Parameters ในภาษา Rust
+   และบอกได้ว่า Generics ช่วยลดการเขียนโค้ดซ้ำและเพิ่มความสามารถในการนำโค้ดกลับมาใช้ซ้ำอย่างไร
+
+2. เขียนและอ่านโค้ด Rust ที่ใช้ Generic Functions, Structs และ Enums
+   พร้อมอธิบายบทบาทของ Type Parameter เช่น `T` และการที่ Compiler อนุมานชนิดข้อมูลจากบริบทได้
+
+3. อธิบายความสัมพันธ์ระหว่าง Generics, Traits และ Trait Bounds
+   รวมถึงเหตุผลที่ Rust ใช้ Trait เพื่อกำหนดความสามารถที่ Generic Type ต้องมี
+
+4. เชื่อมโยงการใช้ Generics และ Type System ของ Rust
+   กับแนวคิดด้าน Programming Languages เช่น Type Safety, Polymorphism และการตรวจสอบชนิดข้อมูลใน Compile Time
+
 
 ---
 
 ## 3. Introduction
 
-`[เขียนเนื้อหาที่นี่ — ใช้โครงสร้างเดียวกับ rust_tutorial_template.md ฉบับเต็มที่ผู้สอนแจกให้]`
+ในการเขียนโปรแกรม เรามักพบกรณีที่ต้องใช้โค้ดแบบเดียวกันกับข้อมูลหลายชนิด เช่น ฟังก์ชันที่ต้องทำงานกับตัวเลขหลายชนิด หรือโครงสร้างข้อมูลที่ต้องเก็บข้อมูลมากกว่าหนึ่งชนิด หากเขียนโค้ดแยกสำหรับแต่ละชนิดข้อมูล จะทำให้เกิดการเขียนโค้ดซ้ำ และทำให้การแก้ไขโปรแกรมในภายหลังทำได้ยากขึ้น
+
+Generics ในภาษา Rust เป็นแนวทางที่ช่วยแก้ปัญหานี้ โดยใช้ Generic Type Parameter เช่น `T` เป็นตัวแทนของชนิดข้อมูลที่ยังไม่ระบุแบบตายตัว ทำให้สามารถเขียน Function, Struct หรือ Enum เพียงชุดเดียวและนำไปใช้กับหลายชนิดข้อมูลได้ โดยยังคงให้ Compiler ตรวจสอบความถูกต้องของชนิดข้อมูลก่อนโปรแกรมทำงาน
+
+นอกจาก Generics แล้ว Rust ยังใช้ Traits เพื่ออธิบายพฤติกรรมที่ Type หนึ่งต้องมี และสามารถใช้ Trait Bounds เพื่อกำหนดว่า Generic Type จะต้องมีความสามารถใดบ้าง ก่อนที่จะนำไปใช้กับการดำเนินการหรือ Method ที่เกี่ยวข้อง แนวคิดนี้ทำให้การเขียน Generic Code มีความยืดหยุ่นโดยยังคงมีข้อกำหนดด้าน Type ที่ชัดเจน
+
+ดังนั้น Generics และ Type System จึงเป็นส่วนสำคัญของการออกแบบภาษา Rust เพราะช่วยให้เราสร้างโค้ดที่นำกลับมาใช้ได้หลายกรณี โดยให้ Compiler ตรวจสอบข้อผิดพลาดด้าน Type ตั้งแต่ Compile Time และช่วยให้ความสัมพันธ์ระหว่างข้อมูลกับพฤติกรรมของโปรแกรมถูกกำหนดไว้อย่างชัดเจน
+
+---
+
+## 4. Key Concepts
+
+### 4.1 Generics and Type Parameters
+
+**คำอธิบาย**
+
+Generics คือแนวทางในการเขียนโค้ดโดยใช้ตัวแทนของชนิดข้อมูลแทนการกำหนด
+ชนิดข้อมูลแบบตายตัว เช่น `T` หรือ `U` ทำให้โค้ดชุดเดียวสามารถนำไปใช้กับ
+ข้อมูลหลายชนิดได้
+
+ในภาษา Rust Generic Type Parameter สามารถใช้กับหลายองค์ประกอบของภาษา
+เช่น Functions, Structs, Enums และ Implementations โดยชนิดจริงของ `T`
+จะถูกกำหนดเมื่อมีการนำ Generic นั้นไปใช้งาน
+
+แนวคิดนี้ช่วยลดการเขียนโค้ดที่มีตรรกะเหมือนกันซ้ำหลายครั้ง โดยยังคงให้
+Compiler ตรวจสอบชนิดข้อมูลของโปรแกรมตามกฎของ Type System ของ Rust
+
+**ตัวอย่าง**
+
+```rust
+#[derive(Debug)]
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+fn main() {
+    let integer_point = Point { x: 5, y: 10 };
+    let float_point = Point { x: 1.5, y: 4.0 };
+
+    println!("Integer point: {:?}", integer_point);
+    println!("Float point: {:?}", float_point);
+}
+```
+**Expected Output**
+
+```
+Integer point: Point { x: 5, y: 10 }
+Float point: Point { x: 1.5, y: 4.0 }
+```
+
+**Explanation**
+
+ในตัวอย่างนี้ `Point<T>` เป็น Struct ที่ใช้ Generic Type Parameter `T`
+เพื่อให้สามารถเก็บข้อมูลประเภทเดียวกันได้หลายชนิด โดย `x` และ `y`
+จะมีชนิดข้อมูลเดียวกับ `T`
+
+เมื่อสร้าง `integer_point` ด้วยค่า `5` และ `10` ซึ่งเป็นจำนวนเต็ม
+Compiler สามารถอนุมานได้ว่า `T` คือ `i32` ทำให้ตัวแปรนี้มีชนิดเป็น
+`Point<i32>`
+
+ส่วน `float_point` มีค่า `1.5` และ `4.0` ซึ่งเป็น Floating-Point
+Compiler จึงอนุมานว่า `T` คือ `f64` และตัวแปรนี้มีชนิดเป็น `Point<f64>`
+
+ดังนั้น Struct `Point<T>` เพียงรูปแบบเดียวสามารถนำไปใช้กับข้อมูลต่างชนิดกันได้
+โดยไม่ต้องสร้าง Struct แยกสำหรับแต่ละชนิดข้อมูล
+
+---
+
+### 4.2 Generic Functions
+
+**คำอธิบาย**
+
+Generic Function คือฟังก์ชันที่สามารถรับหรือคืนค่าที่มีชนิดข้อมูลแบบ Generic
+โดยใช้ Type Parameter เช่น `T` แทนการกำหนดชนิดข้อมูลแบบตายตัว
+
+การประกาศ Generic Function จะระบุ Type Parameter ไว้หลังชื่อฟังก์ชัน
+เช่น `fn identity<T>(value: T) -> T` โดย `T` ในตัวอย่างนี้สามารถแทน
+ชนิดข้อมูลที่แตกต่างกันได้ ทำให้ไม่จำเป็นต้องสร้างฟังก์ชันแยกสำหรับแต่ละ Type
+
+แนวคิดนี้ช่วยลดการเขียนโค้ดซ้ำ โดยยังคงเป็นฟังก์ชันที่มีชนิดข้อมูลชัดเจน
+ตาม Type System ของ Rust
+
+**ตัวอย่าง**
+
+```rust
+fn identity<T>(value: T) -> T {
+    value
+}
+
+fn main() {
+    let number = identity(10);
+    let text = identity("Rust");
+
+    println!("Number: {}", number);
+    println!("Text: {}", text);
+}
+```
+
+---
+
+### 4.3 Generic Structs and Enums
+
+**คำอธิบาย**
+
+นอกจาก Function แล้ว Generics ยังสามารถใช้กับ Struct และ Enum ได้
+โดยกำหนด Generic Type Parameter เช่น `T` เพื่อให้โครงสร้างข้อมูลเดียว
+สามารถรองรับข้อมูลหลายชนิดได้
+
+สำหรับ Struct เราสามารถกำหนด `T` ให้กับ field เพื่อระบุว่าข้อมูลภายใน
+สามารถเป็นชนิดใดก็ได้ตามที่กำหนดเมื่อสร้าง Struct
+
+ส่วน Enum สามารถใช้ Generic Type Parameter เพื่อกำหนดชนิดข้อมูลที่เก็บอยู่ในแต่ละ variant ได้ ตัวอย่างเช่น `Option<T>` ซึ่งใช้แทนกรณีที่ค่าหนึ่งอาจมีข้อมูลหรือไม่มีข้อมูล โดย Type ของ `T` จะถูกกำหนดเมื่อมีการใช้งาน Enum
+
+**ตัวอย่าง**
+
+```rust
+#[derive(Debug)]
+struct Container<T> {
+    value: T,
+}
+
+#[derive(Debug)]
+enum MyOption<T> {
+    Some(T),
+    None,
+}
+
+fn main() {
+    let number = Container { value: 100 };
+    let text = Container {
+        value: "Rust",
+    };
+
+    let some_number = MyOption::Some(42);
+    let no_value: MyOption<i32> = MyOption::None;
+
+    println!("Number container: {:?}", number);
+    println!("Text container: {:?}", text);
+    println!("Some value: {:?}", some_number);
+    println!("No value: {:?}", no_value);
+}
+```
+
+---
+
+### 4.4 Traits as Shared Behavior
+
+**คำอธิบาย**
+
+Trait คือการกำหนดพฤติกรรม (Behavior) ที่ Type สามารถนำไปใช้งานร่วมกันได้ โดยภายใน Trait สามารถประกาศ Method ที่ Type ที่นำ Trait ไปใช้ต้องกำหนดการทำงานให้
+
+แนวคิดของ Trait ช่วยให้เราสามารถกำหนด Interface ของพฤติกรรมร่วมกัน โดยไม่จำเป็นต้องกำหนดว่า Type นั้นต้องเป็น Struct หรือ Enum ชนิดใด
+
+```rust
+trait Describe {
+    fn describe(&self) -> String;
+}
+
+struct User {
+    name: String,
+}
+
+impl Describe for User {
+    fn describe(&self) -> String {
+        format!("User: {}", self.name)
+    }
+}
+
+fn main() {
+    let user = User {
+        name: String::from("Alice"),
+    };
+
+    println!("{}", user.describe());
+}
+```
+
+---
+
+### 4.5 Trait Bounds
+
+**คำอธิบาย**
+
+Trait Bound คือการกำหนดเงื่อนไขให้ Generic Type ว่า Type ที่นำมาใช้งานต้องมี Trait ที่กำหนดไว้ก่อน จึงจะสามารถใช้ความสามารถของ Trait นั้นภายในฟังก์ชันได้
+
+Trait Bound สามารถเขียนในรูปแบบ T: Trait เพื่อระบุว่า Generic Type T ต้อง Implement Trait ที่กำหนด
+
+ตัวอย่าง**
+
+```rust
+use std::fmt::Display;
+
+fn print_value<T: Display>(value: T) {
+    println!("Value: {}", value);
+}
+
+fn main() {
+    print_value(100);
+    print_value("Rust");
+}
+```
+**Monomorphization เบื้องต้น**
+
+เมื่อ Generic Code ถูกนำไปใช้งานกับ Concrete Type ต่าง ๆ Compiler ของ Rust สามารถสร้างโค้ดที่เหมาะกับแต่ละ Type ที่ใช้งานจริงในขั้นตอน Compile Time แนวทางนี้เรียกว่า Monomorphization ซึ่งเป็นส่วนหนึ่งที่ช่วยให้ Generic Code ของ Rust สามารถนำกลับมาใช้ซ้ำได้โดยไม่จำเป็นต้องเลือกชนิดข้อมูลแบบ Dynamic ระหว่าง Runtime
+
+---
+
+## 5. Important Syntax / Rules
+
+| Syntax / Rule         | Meaning                                                        | Example                                  |
+| --------------------- | -------------------------------------------------------------- | ---------------------------------------- |
+| `<T>`                 | ใช้ประกาศ Generic Type Parameter                               | `fn identity<T>(value: T) -> T`          |
+| `Struct<T>`           | ใช้กำหนด Struct ให้รองรับ Generic Type                         | `struct Container<T> { value: T }`       |
+| `Enum<T>`             | ใช้กำหนด Enum ให้รองรับ Generic Type                           | `enum MyOption<T> { Some(T), None }`     |
+| `impl Trait for Type` | ใช้กำหนดให้ Type นั้น Implement Trait                          | `impl Describe for User`                 |
+| `T: Trait`            | กำหนดว่า Generic Type `T` ต้องมี Trait ที่ระบุ                 | `fn print<T: Display>(value: T)`         |
+| `where T: ...`        | ใช้เขียน Trait Bound แยกออกจากส่วนหัวของ Function              | `fn check<T>(value: T) where T: Display` |
+| `#[derive(...)]`      | ให้ Compiler สร้าง Implementation ของ Trait บางตัวให้อัตโนมัติ | `#[derive(Debug)]`                       |
+| `impl Trait` | ใช้ระบุ Trait ที่ Type ต้องสามารถใช้งานได้ หรือใช้เป็น Opaque Type ในบางบริบท | `fn make() -> impl Display` |
+| `dyn Trait` | ใช้สร้าง Trait Object สำหรับ Dynamic Dispatch | `let x: &dyn Display` |
+
+
+### Important Rules
+
+1. Generic Type ต้องถูกระบุหรือสามารถอนุมานได้
+Rust ต้องรู้ว่า Generic Type เช่น T เป็น Type อะไรจากค่าที่ใช้งาน หรือจากการระบุ Type โดยตรง
+2. Trait Bound ต้องตรงกับความสามารถที่ต้องการใช้
+ถ้า Function ต้องเรียกใช้ความสามารถจาก Trait ใด Generic Type ที่นำมาใช้ก็ต้องมี Trait นั้น เช่น T: Display เมื่อ Function ต้องการแสดงค่าด้วย Display
+3. Type ที่ Implement Trait ต้องกำหนดพฤติกรรมของ Trait ให้ครบตามที่ Trait ต้องการ
+เช่น impl Describe for User ต้องกำหนดการทำงานของ describe() ให้กับ User
+4. where เป็นอีกวิธีในการเขียน Trait Bound
+เหมาะกับกรณีที่มีเงื่อนไขหลายตัว เพราะทำให้ส่วนหัวของ Function อ่านง่ายขึ้น โดย Draft ของกลุ่มยกตัวอย่าง where T: PartialOrd + Display ไว้
 
 ---
 
