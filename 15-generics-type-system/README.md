@@ -276,6 +276,54 @@ Rust ต้องรู้ว่า Generic Type เช่น T เป็น Typ
 
 ---
 
+## 6. Runnable Code Examples
+
+> **ข้อกำหนด:** Code ทุกตัวต้อง Compile และ Run ได้จริงก่อนนำมาใส่ในเอกสาร
+
+### Example 1 — `[ชื่อ Example]`
+
+**Purpose:** `[ต้องการสาธิตอะไร]`
+
+```rust
+fn main() {
+    // Write your runnable Rust code here
+}
+```
+
+**Expected Output**
+
+```text
+[expected output]
+```
+
+**Explanation**
+
+`[อธิบาย code ทีละส่วนที่สำคัญ]`
+
+---
+
+### Example 2 — `[ชื่อ Example]`
+
+**Purpose:** `[ต้องการสาธิตอะไร]`
+
+```rust
+fn main() {
+    // Write your runnable Rust code here
+}
+```
+
+**Expected Output**
+
+```text
+[expected output]
+```
+
+**Explanation**
+
+`[อธิบาย code]`
+
+---
+
 ## 7. Common Mistakes
 
 ### Mistake 1 — การคำนวณหรือเปรียบเทียบค่าบน Generic Type โดยไม่มี Trait Bounds
