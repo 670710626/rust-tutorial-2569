@@ -751,8 +751,6 @@ Comparison Language: Java
 ```rust
 use std::fmt::Display;
 
-// Generic Function
-// T ต้องสามารถเปรียบเทียบได้และแสดงผลได้
 fn max_value<T: PartialOrd + Display>(a: T, b: T) -> T {
     if a > b {
         a
@@ -813,7 +811,6 @@ fn main() {
 ```Java
 public class Main {
 
-    // Generic Function
     static <T extends Comparable<T>> T maxValue(T a, T b) {
         return (a.compareTo(b) > 0) ? a : b;
     }
@@ -887,8 +884,6 @@ Comparison Language: Python
 ```rust
 use std::fmt::Display;
 
-// Generic Function
-// T ต้องสามารถเปรียบเทียบได้และแสดงผลได้
 fn max_value<T: PartialOrd + Display>(a: T, b: T) -> T {
     if a > b {
         a
@@ -951,7 +946,6 @@ from typing import TypeVar, Generic
 
 T = TypeVar('T')
 
-
 # Generic Function
 def max_value(a: T, b: T) -> T:
     return a if a > b else b
@@ -1009,8 +1003,6 @@ Comparison Language: C++
 ```rust
 use std::fmt::Display;
 
-// Generic Function
-// T ต้องสามารถเปรียบเทียบได้และแสดงผลได้
 fn max_value<T: PartialOrd + Display>(a: T, b: T) -> T {
     if a > b {
         a
@@ -1071,7 +1063,6 @@ fn main() {
 ```C++
 #include <iostream>
 
-// Generic Function
 template <typename T>
 T max_value(T a, T b) {
     return a > b ? a : b;
