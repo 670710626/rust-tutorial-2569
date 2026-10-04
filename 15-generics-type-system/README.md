@@ -389,6 +389,11 @@ struct Storage<T> {
 }
 
 impl<T> Storage<T> {
+
+    fn get(&self) -> &T {
+        &self.data
+    }
+
     fn byte_size(&self) -> usize {
         size_of::<T>()
     }
@@ -409,9 +414,21 @@ fn main() {
     let byte_store = Storage { data: 42_u8 };
     let float_store = Storage { data: 42.0_f64 };
 
-    println!("Storage<i32> consumes: {} bytes", int_store.byte_size());
-    println!("Storage<u8>  consumes: {} bytes", byte_store.byte_size());
-    println!("Storage<f64> consumes: {} bytes", float_store.byte_size());
+    println!(
+        "Storage<i32> holds value: {:<4} | consumes: {} bytes",
+        int_store.get(),
+        int_store.byte_size()
+    );
+    println!(
+        "Storage<u8>  holds value: {:<4} | consumes: {} bytes",
+        byte_store.get(),
+        byte_store.byte_size()
+    );
+    println!(
+        "Storage<f64> holds value: {:<4} | consumes: {} bytes",
+        float_store.get(),
+        float_store.byte_size()
+    );
 }
 ```
 
@@ -419,25 +436,25 @@ fn main() {
 (หมายเหตุ: แอดเดรสฐาน 0x... จะเปลี่ยนไปตามการจัดสรร Memory ของ OS แต่ความสัมพันธ์ของตำแหน่งจะเหมือนกัน)
 ```text
 === 1. Function Pointer Monomorphization ===
-Type: i32   | Value: 100   | Function Address: 0x55bc6b801120
-Type: i32   | Value: 200   | Function Address: 0x55bc6b801120
-Type: f64   | Value: 3.14  | Function Address: 0x55bc6b801150
-Type: bool  | Value: true  | Function Address: 0x55bc6b801180
+Type: i32   | Value: 100   | Function Address: 0x7ff6521911e0
+Type: i32   | Value: 200   | Function Address: 0x7ff6521911e0
+Type: f64   | Value: 3.14  | Function Address: 0x7ff6521910f0
+Type: bool  | Value: true  | Function Address: 0x7ff652191000
 
 === 2. Struct Memory Layout ===
-Storage<i32> consumes: 4 bytes
-Storage<u8>  consumes: 1 bytes
-Storage<f64> consumes: 8 bytes
+Storage<i32> holds value: 42   | consumes: 4 bytes
+Storage<u8>  holds value: 42   | consumes: 1 bytes
+Storage<f64> holds value: 42   | consumes: 8 bytes
 ```
 
 **Explanation**
 
 1. Monomorphization in Functions:
-   - สังเกตว่า inspect_execution(100_i32) และ inspect_execution(200_i32) ชี้ไปยัง Function Address เดียวกัน (0x...1120) เพราะคอมไพเลอร์มองว่าเป็นโค้ดฟังก์ชันรูปธรรมชุดเดียวกัน
-   - เมื่อส่ง f64 และ bool ตัวชี้จะกลายเป็น Address ใหม่ (0x...1150 และ 0x...1180) พิสูจน์ว่า Rust แตกโค้ด Generic ออกเป็นฟังก์ชันเฉพาะ Type ให้โดยอัตโนมัติ (Static Dispatch)
+   - สังเกตว่า inspect_execution(100_i32) และ inspect_execution(200_i32) ชี้ไปยัง Function Address เดียวกัน (0x...11e0) เพราะคอมไพเลอร์มองว่าเป็นโค้ดฟังก์ชันรูปธรรมชุดเดียวกัน (Concrete Function)
+   - เมื่อเปลี่ยน Type เป็น f64 และ bool ตัวชี้จะกลายเป็น Address ใหม่ทันที (0x...10f0 และ 0x...1000) พิสูจน์ว่า Rust แตกโค้ด Generic ออกเป็นฟังก์ชันเฉพาะของแต่ละ Type ให้โดยอัตโนมัติในระดับ Machine Code (Static Dispatch)
 2. Monomorphization in Structs:
-   - Storage<i32>, Storage<u8>, และ Storage<f64> มีขนาดหน่วยความจำตาม Type ภายในจริง (4, 1, 8 ไบต์)
-   - ไม่มีการใช้ Pointer ห่อหุ้ม (Box) หรือเพิ่ม Metadata Overhead แอบแฝง ทำให้ได้ประสิทธิภาพระดับสูงสุดของฮาร์ดแวร์เทียบเท่าภาษา C (Zero-Cost Abstraction)
+   - Storage<i32>, Storage<u8>, และ Storage<f64> มีขนาดหน่วยความจำตาม Type ข้อมูลจริงที่บรรจุอยู่ภายใน (4, 1, และ 8 ไบต์ตามลำดับ)
+   - มีการเรียกใช้ Method .get() เพื่อดึงค่าจริงออกมาใช้งานโดยตรง และไม่มีการใช้ Pointer ห่อหุ้ม (Box) หรือแอบแฝง Metadata/Type Tag ใดๆ เพิ่มเติม ทำให้ได้ประสิทธิภาพสูงสุดในระดับฮาร์ดแวร์เทียบเท่าภาษา C/C++ (Zero-Cost Abstraction)
 
 ---
 
