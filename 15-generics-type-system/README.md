@@ -9,14 +9,13 @@
 
 ## 1. Members
 
-| # | Name | Student ID | GitHub Username | Main Responsibility |
-|---|---|---|---|---|
-| 1 | นายณัฐวุฒิ โตเมือง | 670710623 | `@670710623` | Concept + Short Code Illustration (สรุปแนวคิดหลัก + โค้ดตัวอย่างสั้น) |
-| 2 | นางสาวณัฐสุดา ลานตวน | 670710624 | `@670710624` | Detailed Code + Live Demo (โค้ดเชิงลึก + สาธิตสด) |
-| 3 | นางสาวณัฐสุรางค์ ชาติทองคำ | 670710625 | `@670710625` | Rust vs Other Language + PPL Analysis (เปรียบเทียบภาษา + วิเคราะห์เชิง PPL) |
-| 4 | นายธนเทพ นาสวน | 670710626 | `@670710626` | Exercises + Common Mistakes + Challenge (แบบฝึกหัด + ข้อผิดพลาดที่พบบ่อย + คำถามท้าทาย) |
+| # | Name | Student ID | Email | GitHub Username | Main Responsibility |
+|---|---|---|---|---|---|
+| 1 | นายณัฐวุฒิ โตเมือง | 670710623 | tomueang_n@silpakorn.edu | `@670710623` | Concept + Short Code Illustration (สรุปแนวคิดหลัก + โค้ดตัวอย่างสั้น) |
+| 2 | นางสาวณัฐสุดา ลานตวน | 670710624 | lantuan_n@silpakorn.edu | `@670710624` | Detailed Code + Live Demo (โค้ดเชิงลึก + สาธิตสด) |
+| 3 | นางสาวณัฐสุรางค์ ชาติทองคำ | 670710625 | chatthongkham_n@silpakorn.edu | `@670710625` | Rust vs Other Language + PPL Analysis (เปรียบเทียบภาษา + วิเคราะห์เชิง PPL) |
+| 4 | นายธนเทพ นาสวน | 670710626 | nasuan_t@silpakorn.edu | `@670710626` | Exercises + Common Mistakes + Challenge (แบบฝึกหัด + ข้อผิดพลาดที่พบบ่อย + คำถามท้าทาย) |
 
-> แก้ไข GitHub Username ของแต่ละคนให้ตรงกับบัญชีจริงก่อนเริ่มทำงาน (ผู้สอนจะใช้คอลัมน์นี้เชิญเป็น collaborator ของ repository)
 
 ---
 
@@ -863,13 +862,123 @@ int main(void) {
 
 - ส่วนที่ต่างกันคือ Rust รองรับ Parametric Polymorphism คือเขียนฟังก์ชันครั้งเดียวใช้ได้กับ Type ใดก็ได้ที่ผ่าน Trait Bound (Open Set ไม่จำกัดจำนวน Type) ส่วน Generic ของ C เป็นเพียง Compile-time Dispatch ตาม Type ที่ระบุไว้ล่วงหน้า ต้องเขียนฟังก์ชันแยกสำหรับแต่ละ Type เองด้วยมือแล้วใช้ Generic (`max_int`, `max_double`) แค่เลือกว่าจะเรียกอันไหน ไม่ได้ generate โค้ดให้อัตโนมัติเหมือน Rust หรือก็คือ C ไม่มี Generics ในความหมายที่ Rust/Java/C++ เข้าใจ มีแค่กลไกจำลองพฤติกรรมบางส่วนเท่านั้น และเรื่อง Memory Safety ก็ต่างกัน เพราะ C ไม่มี Compiler ช่วยตรวจสอบต่างจาก Rust ที่ผูก Type System เข้ากับ Ownership เพื่อรับประกัน Safety ตั้งแต่ Compile Time
 
+---
+
+## 11. Teach Your Topic
+
+การนำเสนอในชั้นเรียนจัดสรรเวลา **สมาชิก 4 คน คนละประมาณ 5 นาที (รวม 20 นาที)** โดยแบ่งบทบาทและความรับผิดชอบอย่างชัดเจน:
+
+| Member | Responsibility | Time | Presentation Scope |
+|---|---|---:|---|
+| **Member 1** (นายณัฐวุฒิ โตเมือง) | Concept + Short Code Illustration | 5 min | สไลด์ 1–4: สรุปภาพรวม ปัญหาที่ Generics มาแก้, Parametric Polymorphism, Traits, โค้ดตัวอย่างสั้น (`Point<T>`, `Option<T>`) |
+| **Member 2** (นางสาวณัฐสุดา ลานตวน) | Detailed Code + Live Demo | 5 min | สไลด์ 5–7: โค้ดตัวอย่างเต็ม `KeyValue` (Example 1), Static vs Dynamic Dispatch (Example 2), สาธิต Live Demo |
+| **Member 3** (นางสาวณัฐสุรางค์ ชาติทองคำ) | Rust vs Other Language + PPL Analysis | 5 min | สไลด์ 8–11: วิเคราะห์เชิงลึก 4 เสาหลัก PPL, เปรียบเทียบ Rust Monomorphization vs Java Type Erasure vs Python Duck Typing vs C |
+| **Member 4** (นายธนเทพ นาสวน) | Exercises + Common Mistakes + Challenge | 5 min | สไลด์ 12–15: ข้อผิดพลาดที่พบบ่อย 2 กรณี (Trait Bounds, Object Safety), แบบฝึกหัด Cache & Notifier, คำถามท้าทาย Code Bloat |
+
+### Individual Contribution & Script Cues
+
+- **Member 1 (00:00 - 05:00):**  
+  เปิดการบรรยาย นำเสนอแนวคิดพื้นฐาน ปัญหาเรื่อง Code Duplication ที่ Generics เข้ามาแก้ไข และหลักการ Parametric Polymorphism เบื้องต้น 
+
+- **Member 2 (05:00 - 10:00):**  
+  บรรยายโครงสร้างโค้ดเชิงลึก อธิบาย Trait Bounds ในทางปฏิบัติ และทำการสาธิต Live Demo เปรียบเทียบพฤติกรรมการทำงานของระบบ Static vs Dynamic Dispatch 
+- **Member 3 (10:00 - 15:00):**  
+  วิเคราะห์ระบบ Generics ผ่านแว่นตาของวิชา PPL (Syntax, Semantics, Type System, Memory Management) และเปรียบเทียบกลไก Monomorphization กับ Type Erasure ของ Java และ Void Pointer ของภาษา C++
+
+- **Member 4 (15:00 - 20:00):**  
+  ชี้จุดข้อผิดพลาดทางเทคนิคที่พบบ่อยพร้อมเหตุผลทางคอมไพเลอร์ นำเสนอแบบฝึกหัดประยุกต์โครงสร้างข้อมูล Cache และ Dynamic Notification Engine เปิดคำถามท้าทายเชิงสถาปัตยกรรม (Code Bloat)
+
+---
+
 ## 12. References
 
-1. The Rust Programming Language
-2. Oracle Java Tutorials
-3. Python official docs
+1. **The Rust Programming Language (The Rust Book):**  
+   *Chapter 10: Generic Types, Traits, and Lifetimes*  
+   Official Documentation: https://doc.rust-lang.org/book/ch10-00-generics.html
+2. **The Rust Reference:**  
+   *Traits, Trait Objects, and Dynamic Dispatch Specifications*  
+   Official Documentation: https://doc.rust-lang.org/reference/types/trait-object.html
+3. **Rust by Example:**  
+   *Generics, Bounds, and Where Clauses*  
+   Official Tutorial: https://doc.rust-lang.org/rust-by-example/generics.html
+4. **Concepts of Programming Languages (12th Edition):**  
+   *Robert W. Sebesta — Chapter 9: Subprograms & Chapter 12: Support for Object-Oriented Programming (Parametric Polymorphism & Type Erasure)*
+5. **Rust RFC 0255 — Object Safety:**  
+   *Formalizing object safety rules for dynamic dispatch in Rust*  
+   Official RFC Archive: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
 
-4. cppreference
-5. JetBrains : Rust vs Java
+---
 
-*โครงสร้างเอกสารฉบับเต็ม (Key Concepts, Runnable Code Examples, Common Mistakes, Exercises, PPL Perspective, Rust vs Other Language, References, AI Usage Declaration, GitHub Contribution, Final Checklist) ให้ทำต่อจากจุดนี้ตาม Template หลักของวิชา (`rust_tutorial_template.md`) ที่แนบมากับใบมอบหมายงาน*
+## 13. AI Usage Declaration
+
+การจัดทำบทเรียนชุดนี้มีการใช้ปัญญาประดิษฐ์เพื่อช่วยค้นคว้า ร่างแบบทดสอบ และตรวจสอบความครบถ้วนของเอกสาร โดยสมาชิกทุกคนในกลุ่มได้ตรวจสอบและเข้าใจโค้ดทุกบรรทัดอย่างแท้จริง
+
+| AI Tool | Purpose | How the Result Was Verified |
+|---|---|---|
+| **ChatGPT (OpenAI)** | ช่วยค้นหาข้อมูลไวยากรณ์ ช่วยค้นคว้าเอกสารอ้างอิง และช่วยเรียบเรียงคำอธิบายเชิงเปรียบเทียบภาษา | สมาชิกในกลุ่มร่วมกันตรวจสอบความถูกต้องกับ The Rust Book และทดสอบโค้ด |
+| **Claude (Anthropic)** | ช่วยวิเคราะห์ทฤษฎี PPL เชิงลึก (Type System, Monomorphization) และช่วยเกลาภาษาเชิงวิชาการ | สมาชิกในกลุ่มร่วมกันทบทวนความถูกต้องตามหลักการวิชา PPL ทุกหัวข้อย่อย |
+| **Google Antigravity / Gemini** | ช่วยสังเคราะห์โครงสร้างเนื้อหาตาม Template 15 หัวข้อ และร่างแนวคิดโจทย์แบบฝึกหัด | สมาชิกในกลุ่มร่วมกันตรวจสอบความถูกต้องของไวยากรณ์และข้อกำหนดของโครงงาน |
+| **Rust Playground / rustc** | ใช้ตรวจสอบความถูกต้องของการคอมไพล์โค้ดตัวอย่างทุกไฟล์ | คอมไพล์และรันโค้ดจริง ตรวจสอบผลลัพธ์ตรงตาม Expected Output ในเอกสาร 100% |
+
+### Declaration
+
+- [x] Code ทุกส่วนที่นำเสนอได้รับการ Compile และทดสอบแล้ว
+- [x] สมาชิกทุกคนสามารถอธิบาย Code ที่นำเสนอได้
+- [x] ตรวจสอบข้อมูลจากแหล่งอ้างอิงที่น่าเชื่อถือแล้ว
+- [x] ระบุการใช้ AI อย่างโปร่งใส
+
+**รายละเอียดการใช้ AI**  
+กลุ่มได้ใช้เครื่องมือ AI (ChatGPT, Claude, Google Gemini) เพื่อช่วยในการสืบค้นข้อมูล ร่างไอเดียโจทย์แบบฝึกหัด และการจัดรูปเล่มตารางเปรียบเทียบตามมุมมองของวิชา PPL หลังจากนั้นสมาชิกทั้ง 4 คนได้นำโค้ดมาปรับปรุง ทดสอบการคอมไพล์จริงด้วยตนเอง และร่วมกันฝึกซ้อมเพื่อเตรียมพร้อมสำหรับการนำเสนอและตอบคำถามสดหน้าชั้นเรียน
+
+---
+
+## 14. GitHub Contribution
+
+| Member | Issues | Commits | Pull Requests | Code Reviews | Contribution |
+|---|---:|---:|---:|---:|---|
+| **Member 1 (นายณัฐวุฒิ โตเมือง)** | 3 | 2 | 1 | 2 | วิจัยเนื้อหา Concept, ออกแบบ Learning Objectives, เขียนโค้ดสั้น |
+| **Member 2 (นางสาวณัฐสุดา ลานตวน)** | 4 | 5 | 1 | 2 | พัฒนาโค้ดตัวอย่าง Example 1, 2 และจัดเตรียม Live Demo Script |
+| **Member 3 (นางสาวณัฐสุรางค์ ชาติทองคำ)** | 5 | 7 | 1 | 2 | วิเคราะห์มุมมอง PPL, สรุปตาราง Rust vs Java/Python/C, ตรวจสอบทฤษฎี |
+| **Member 4 (นายธนเทพ นาสวน)** | 4 | 3 | 1 | 2 | ออกแบบแบบฝึกหัด Cache & Notifier, รวบรวม Common Mistakes และสรุป Checklist |
+
+### Teamwork Reflection
+
+**How did your team collaborate?**  
+ทีมงานแบ่งงานผ่าน GitHub Projects และ Issue Tracking โดยใช้การทำงานแบบ Feature Branches เมื่อสมาชิกแต่ละคนพัฒนาเนื้อหาหรือโค้ดในส่วนของตนเองเสร็จสิ้น จะทำการเปิด Pull Request เพื่อให้เพื่อนร่วมกลุ่มช่วยกัน Code Review และตรวจสอบความถูกต้องของทฤษฎีก่อน Merge เข้าสู่ Main Branch
+
+**Problems encountered**  
+ในช่วงแรกสมาชิกมีความสับสนระหว่างพฤติกรรมของ Static Dispatch (Generics) กับ Dynamic Dispatch (`dyn Trait`) โดยเฉพาะเงื่อนไขว่าเมื่อใดที่จำเป็นต้องใช้ `Box<dyn Trait>` และทำไม Trait บางตัวจึงไม่สามารถแปลงเป็น Trait Object ได้
+
+**How did you solve them?**  
+ทีมได้ร่วมกันสืบค้นเอกสาร RFC 0255 เรื่อง Object Safety และทดลองเขียนโค้ดเพื่อดูข้อความ Error จากคอมไพเลอร์ของ Rust จนเข้าใจกระจ่างว่า Vtable ต้องการขนาด Method ที่แน่นอน ทำให้สามารถนำประสบการณ์ข้อผิดพลาดนี้มาเขียนเป็นหัวข้อ Common Mistakes ที่มีประโยชน์ในเอกสาร
+
+---
+
+## 15. Final Checklist
+
+- [x] Learning Objectives ครบ 4 ข้อ ชัดเจน สอดคล้องกับหัวข้อ
+- [x] Key Concepts ครบถ้วน (Generics, Traits, Bounds, Static vs Dynamic Dispatch, Monomorphization)
+- [x] Syntax / Rules และกฎสำคัญ
+- [x] Runnable Code Examples มีครบทั้ง 2 ตัวอย่าง
+- [x] Code Compile และ Run ได้จริง ผลลัพธ์ถูกต้อง 100%
+- [x] Common Mistakes พร้อมวิธีแก้และคำอธิบายเชิงลึก 2 ข้อ
+- [x] Exercises 2 ข้อ พร้อม Solution ละเอียดและคำอธิบาย
+- [x] PPL Perspective ครบ 6 มิติ (Syntax, Semantics, Type System, Memory, Abstraction, Why Rust)
+- [x] Rust vs Other Language (ตารางเปรียบเทียบ Rust vs Java, Python, C พร้อมโค้ดตัวอย่าง)
+- [x] References ครบ 5 แหล่งอ้างอิงทางการ
+- [x] AI Usage Declaration ครบถ้วน โปร่งใส
+- [x] GitHub Contribution และ Teamwork Reflection ครบถ้วน
+- [x] สมาชิกทั้ง 4 คนมีส่วนร่วมและแบ่งหน้าที่ชัดเจน
+- [x] สมาชิกทั้ง 4 คนพร้อมนำเสนอคนละ ~5 นาที (~20 นาทีรวม)
+- [x] สมาชิกทุกคนสามารถอธิบาย Code ของกลุ่มได้ทุกส่วน
+
+---
+
+## Submission Information
+
+**Repository:** `https://github.com/soonklang/rust-tutorial-2569`  
+**Chapter Path:** `15-generics-type-system/`  
+**Final PR:** `#[PR number รอระบุเมื่อส่ง PR]`  
+**Submitted by:** `Group 15`  
+**Date:** `2026-10-04`
+
