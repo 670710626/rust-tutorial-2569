@@ -817,15 +817,15 @@ print(max_value(3, 7))
 
 - Rust เป็น Static Type System ที่ Compiler บังคับตรวจสอบ Generic และ Trait Bound ก่อนโปรแกรมจะรันได้เลย ทำให้ข้อผิดพลาดเรื่อง Type ถูกจับตั้งแต่ Compile Time ทั้งหมด ในขณะที่ Python ไม่มี Compile-time Type Checking ในตัวภาษาเลย จึงต้องพึ่งเครื่องมือภายนอกอย่าง mypy ในการตรวจสอบแทน Compiler ของภาษาเอง
 
-Comparison Language: C
+Comparison Language: C++
 
-| Aspect | Rust | C |
+| Aspect | Rust | C++ |
 |---|---|---|
-| Syntax | ใช้ `<T>` ระบุ Type Parameter พร้อม Trait Bound เป็น Syntax หลักของภาษาที่ออกแบบมาเพื่อ Generic โดยเฉพาะ | ไม่มี Syntax สำหรับ Generic โดยตรง ภาษา C ไม่รองรับ Parametric Polymorphism เลย วิธีที่ใกล้เคียงที่สุดคือ `_Generic` keyword (เพิ่มเข้ามาใน C11) ที่ใช้เลือก expression ตาม Type ของ argument เช่น `#define max(a,b) _Generic((a), int: max_int, double: max_double, default: max_int)(a,b)` |
-| Semantics / Behavior | Compiler ตรวจสอบและ Monomorphize ตั้งแต่ Compile Time สร้างโค้ดจริงแยกสำหรับแต่ละ Type ที่ใช้งาน ไม่มี Runtime Overhead | Generic ถูก Resolve ตอน Compile Time เช่นกัน แต่เป็นการเลือก function ที่มีอยู่แล้วจาก Type ที่ระบุไว้ตายตัว ไม่ใช่การสร้างโค้ดใหม่จาก Template แบบ Rust ถ้า Type ไม่อยู่ใน list ที่ระบุไว้ จะ fallback ไป `default` หรือ error ตอน Compile |
-| Type System | Static Type System ที่ผูกกับ Trait System บังคับให้ Type ต้อง implement พฤติกรรมที่ต้องการก่อน | Static Type System แต่ไม่มีกลไก Trait Bound แบบ Rust โดย Generic สามารถเลือก expression ตาม Type ที่ระบุไว้ล่วงหน้า จึงไม่สามารถกำหนดข้อกำหนดเชิงพฤติกรรม |
-| Memory Management | ใช้ Ownership และ Borrowing จัดการหน่วยความจำ ไม่มี Garbage Collector ปล่อย Resource แบบกำหนดเวลาแน่นอนโดย Compiler ตรวจสอบให้ | จัดการหน่วยความจำเองทั้งหมดผ่าน `malloc`/`free` ไม่มี Compiler หรือ Runtime ใดๆ คอยตรวจสอบว่าปล่อย Memory ถูกที่ถูกเวลาหรือไม่ ผู้เขียนต้องรับผิดชอบเองทั้งหมด |
-| Safety | Compiler ตรวจสอบ Type และกฎ Ownership ก่อนโปรแกรมทำงาน ป้องกัน Memory Bug ได้ตั้งแต่ Compile Time | ไม่มีการตรวจสอบ Memory Safety ใดๆ ทั้งจาก Compiler หรือ Runtime การใช้ `void*` ร่วมกับ Generic แบบ Manual อาจทำให้เกิด Undefined Behavior ได้ง่าย เช่น cast ผิด Type แล้วอ่านค่าผิดเพี้ยนโดยไม่มี error ใดๆ เตือน |
+| Syntax | ใช้ `<T>` ระบุ Type Parameter พร้อม Trait Bound เป็น Syntax หลักของภาษาที่ออกแบบมาเพื่อ Generic โดยเฉพาะ | ใช้ template <typename T> หรือ template <class T> เพื่อประกาศ Type Parameter และสามารถใช้ Concepts เช่น std::totally_ordered ใน C++20 เพื่อกำหนดข้อจำกัด |
+| Semantics / Behavior | Compiler ตรวจสอบและ Monomorphize ตั้งแต่ Compile Time สร้างโค้ดจริงแยกสำหรับแต่ละ Type ที่ใช้งาน ไม่มี Runtime Overhead | Compiler สร้าง/instantiate โค้ดจาก Template ตาม Type ที่ใช้งาน โดยทั่วไปเกิดขึ้นตอน Compile Time และสามารถใช้ Concepts ช่วยตรวจสอบข้อกำหนดของ Type |
+| Type System | Static Type System ที่ผูกกับ Trait System บังคับให้ Type ต้อง implement พฤติกรรมที่ต้องการก่อน | Static Type System และใช้ Template เพื่อกำหนดข้อกำหนดของ Type แต่ไม่มี Trait System แบบ Rust |
+| Memory Management | ใช้ Ownership และ Borrowing จัดการหน่วยความจำ ไม่มี Garbage Collector ปล่อย Resource แบบกำหนดเวลาแน่นอนโดย Compiler ตรวจสอบให้ | ไม่มี Garbage Collector เป็นกลไกหลักของภาษา สามารถจัดการ Resource ด้วย RAII, smart pointers และการจัดการหน่วยความจำแบบ manual ได้ โดย Template ไม่ได้กำหนดรูปแบบการจัดการ Memory โดยตรง |
+| Safety | Compiler ตรวจสอบ Type และกฎ Ownership ก่อนโปรแกรมทำงาน ป้องกัน Memory Bug ได้ตั้งแต่ Compile Time | มี Static Type Checking และเครื่องมืออย่าง RAII/Smart Pointer ช่วยเพิ่มความปลอดภัย แต่ยังสามารถเกิด Memory Bug อย่าง dangling pointer, use-after-free หรือ undefined behavior ได้ |
 
 ### Rust Example
 ```rust
@@ -838,31 +838,26 @@ fn main() {
 }
 ```
 
-### C Example
+### C++ Example
 
 ```c
-#include <stdio.h>
+#include <iostream>
 
-int max_int(int a, int b) { return a > b ? a : b; }
-double max_double(double a, double b) { return a > b ? a : b; }
+template <typename T>
+T max_value(T a, T b) {
+    return a > b ? a : b;
+}
 
-#define max(a, b) _Generic((a), \
-    int: max_int, \
-    double: max_double, \
-    default: max_int \
-)(a, b)
-
-int main(void) {
-    printf("%d\n", max(3, 7));
+int main() {
+    std::cout << max_value(3, 7) << '\n';
     return 0;
 }
 ```
 
 ### Analysis
-- ทั้งสองภาษาต้องการโค้ดที่ทำงานกับหลาย Type ได้เหมือนกัน และการ Resolve ว่าจะใช้ Type ไหนก็เกิดขึ้นตอน Compile Time เหมือนกันทั้งคู่ (Rust ผ่าน Monomorphization, C ผ่าน Generic ที่ Resolve ตอน Compile เช่นกัน)
-
-- ส่วนที่ต่างกันคือ Rust รองรับ Parametric Polymorphism คือเขียนฟังก์ชันครั้งเดียวใช้ได้กับ Type ใดก็ได้ที่ผ่าน Trait Bound (Open Set ไม่จำกัดจำนวน Type) ส่วน Generic ของ C เป็นเพียง Compile-time Dispatch ตาม Type ที่ระบุไว้ล่วงหน้า ต้องเขียนฟังก์ชันแยกสำหรับแต่ละ Type เองด้วยมือแล้วใช้ Generic (`max_int`, `max_double`) แค่เลือกว่าจะเรียกอันไหน ไม่ได้ generate โค้ดให้อัตโนมัติเหมือน Rust หรือก็คือ C ไม่มี Generics ในความหมายที่ Rust/Java/C++ เข้าใจ มีแค่กลไกจำลองพฤติกรรมบางส่วนเท่านั้น และเรื่อง Memory Safety ก็ต่างกัน เพราะ C ไม่มี Compiler ช่วยตรวจสอบต่างจาก Rust ที่ผูก Type System เข้ากับ Ownership เพื่อรับประกัน Safety ตั้งแต่ Compile Time
-
+- ทั้งสองภาษารองรับ Generic/Template Code ที่สามารถนำไปใช้กับหลาย Type และ Compiler ตรวจสอบความถูกต้องของ Type ก่อนโปรแกรมทำงาน
+- ส่วนที่ต่างกันคือ Rust ใช้ Generics ร่วมกับ Trait Bounds และมี Monomorphization เป็นกลไกสำคัญ ส่วน C++ ใช้ Templates ซึ่งเป็นกลไก Compile-time Polymorphism และสามารถใช้ Concepts (C++20) เพื่อกำหนดข้อจำกัดของ Type ได้อย่างชัดเจน
+- Rust ผูก Generic เข้ากับ Ownership และ Borrowing เพื่อช่วยรับประกัน Memory Safety ส่วน C++ มีเครื่องมืออย่าง RAII และ Smart Pointer ช่วยจัดการ Resource แต่ไม่ได้รับประกัน Memory Safety แบบ Rust
 ## 12. References
 
 1. The Rust Programming Language
