@@ -1140,9 +1140,9 @@ int main() {
 
 | Member | Responsibility | Time | Presentation Scope |
 |---|---|---:|---|
-| **Member 1** (นายณัฐวุฒิ โตเมือง) | Concept + Short Code Illustration | 5 min | สไลด์ 1–4: สรุปภาพรวม ปัญหาที่ Generics มาแก้, Parametric Polymorphism, Traits, โค้ดตัวอย่างสั้น (`Point<T>`, `Option<T>`) |
-| **Member 2** (นางสาวณัฐสุดา ลานตวน) | Detailed Code + Live Demo | 5 min | สไลด์ 5–7: โค้ดตัวอย่างเต็ม `KeyValue` (Example 1), Static vs Dynamic Dispatch (Example 2), สาธิต Live Demo |
-| **Member 3** (นางสาวณัฐสุรางค์ ชาติทองคำ) | Rust vs Other Language + PPL Analysis | 5 min | สไลด์ 8–11: วิเคราะห์เชิงลึก 4 เสาหลัก PPL, เปรียบเทียบ Rust Monomorphization vs Java Type Erasure vs Python Duck Typing vs C++ |
+| **Member 1** (นายณัฐวุฒิ โตเมือง) | Concept + Short Code Illustration | 5 min | สรุปภาพรวม ปัญหาที่ Generics มาแก้, Parametric Polymorphism, Traits, โค้ดตัวอย่างสั้น (`Point<T>`, `Option<T>`) |
+| **Member 2** (นางสาวณัฐสุดา ลานตวน) | Detailed Code + Live Demo | 5 min | โค้ดตัวอย่างเต็ม `KeyValue` (Example 1), Static vs Dynamic Dispatch (Example 2), สาธิต Live Demo |
+| **Member 3** (นางสาวณัฐสุรางค์ ชาติทองคำ) | Rust vs Other Language + PPL Analysis | 5 min |  วิเคราะห์เชิงลึก 4 เสาหลัก PPL, เปรียบเทียบ Rust Monomorphization vs Java Type Erasure vs Python Duck Typing vs C++ |
 | **Member 4** (นายธนเทพ นาสวน) | Exercises + Common Mistakes + Challenge | 5 min | สไลด์ 12–15: ข้อผิดพลาดที่พบบ่อย 2 กรณี (Trait Bounds, Object Safety), แบบฝึกหัด Cache & Notifier, คำถามท้าทาย Code Bloat |
 
 ### Individual Contribution & Script Cues
@@ -1176,6 +1176,12 @@ int main() {
 5. **Rust RFC 0255 — Object Safety:**  
    *Formalizing object safety rules for dynamic dispatch in Rust*  
    Official RFC Archive: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
+6. **cppreference:**  
+   Official Documentation: https://cppreference.com/
+7. **Oracle Java Tutorials:**  
+   Official Tutorial: https://docs.oracle.com/javase/tutorial/
+8. **JetBrains — Rust vs Java:**  
+   Official Article: https://blog.jetbrains.com/rust/2025/08/01/rust-vs-java/
 
 ---
 
@@ -1209,7 +1215,7 @@ int main() {
 | **Member 1 (นายณัฐวุฒิ โตเมือง)** | 3 | 2 | 1 | 2 | วิจัยเนื้อหา Concept, ออกแบบ Learning Objectives, เขียนโค้ดสั้น |
 | **Member 2 (นางสาวณัฐสุดา ลานตวน)** | 4 | 5 | 1 | 2 | พัฒนาโค้ดตัวอย่าง Example 1, 2 และจัดเตรียม Live Demo Script |
 | **Member 3 (นางสาวณัฐสุรางค์ ชาติทองคำ)** | 5 | 7 | 1 | 2 | วิเคราะห์มุมมอง PPL, สรุปตาราง Rust vs Java/Python/C, ตรวจสอบทฤษฎี |
-| **Member 4 (นายธนเทพ นาสวน)** | 4 | 3 | 1 | 2 | ออกแบบแบบฝึกหัด Cache & Notifier, รวบรวม Common Mistakes และสรุป Checklist |
+| **Member 4 (นายธนเทพ นาสวน)** | 4 | 6 | 1 | 2 | ออกแบบแบบฝึกหัด Cache & Notifier, รวบรวม Common Mistakes และสรุป Checklist |
 
 ### Teamwork Reflection
 
