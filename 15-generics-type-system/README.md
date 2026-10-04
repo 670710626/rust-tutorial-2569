@@ -1231,7 +1231,7 @@ int main() {
 
 **Repository:** `https://github.com/soonklang/rust-tutorial-2569`  
 **Chapter Path:** `15-generics-type-system/`  
-**Final PR:** `#[PR number รอระบุเมื่อส่ง PR]`  
+**Final PR:** `#43`  
 **Submitted by:** `Group 15`  
 **Date:** `2026-10-04`
 
