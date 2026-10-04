@@ -12,7 +12,7 @@
 | # | Name | Student ID | GitHub Username | Main Responsibility |
 |---|---|---|---|---|
 | 1 | นายณัฐวุฒิ โตเมือง | 670710623 | `@670710623` | Concept + Short Code Illustration (สรุปแนวคิดหลัก + โค้ดตัวอย่างสั้น) |
-| 2 | นางสาวณัฐสุดา ลานตวน | 670710624 | `@670710624` | Detailed Code + Live Demo (โค้ดเชิงลึก + สาธิตสด) |
+| 2 | นางสาวณัฐสุดา ลานตวน | นางสาวณัฐสุดา ลานตวน | `@670710624` | Detailed Code + Live Demo (โค้ดเชิงลึก + สาธิตสด) |
 | 3 | นางสาวณัฐสุรางค์ ชาติทองคำ | 670710625 | `@670710625` | Rust vs Other Language + PPL Analysis (เปรียบเทียบภาษา + วิเคราะห์เชิง PPL) |
 | 4 | นายธนเทพ นาสวน | 670710626 | `@670710626` | Exercises + Common Mistakes + Challenge (แบบฝึกหัด + ข้อผิดพลาดที่พบบ่อย + คำถามท้าทาย) |
 
@@ -749,11 +749,62 @@ Comparison Language: Java
 
 ### Rust Example
 ```rust
-fn max<T: PartialOrd>(a: T, b: T) -> T {
-    if a > b { a } else { b }
+use std::fmt::Display;
+
+// Generic Function
+// T ต้องสามารถเปรียบเทียบได้และแสดงผลได้
+fn max_value<T: PartialOrd + Display>(a: T, b: T) -> T {
+    if a > b {
+        a
+    } else {
+        b
+    }
 }
+
+// Generic Struct
+#[derive(Debug)]
+struct Pair<T> {
+    first: T,
+    second: T,
+}
+
+impl<T: PartialOrd + Display> Pair<T> {
+    fn max(&self) -> &T {
+        if self.first > self.second {
+            &self.first
+        } else {
+            &self.second
+        }
+    }
+
+    fn print(&self) {
+        println!(
+            "First: {}, Second: {}, Max: {}",
+            self.first,
+            self.second,
+            self.max()
+        );
+    }
+}
+
 fn main() {
-    println!("{}", max(3, 7));
+    // Generic Function
+    println!("Max Integer: {}", max_value(10, 20));
+    println!("Max Float: {}", max_value(3.5, 2.8));
+
+    // Generic Struct
+    let numbers = Pair {
+        first: 15,
+        second: 25,
+    };
+
+    let scores = Pair {
+        first: 85.5,
+        second: 92.0,
+    };
+
+    numbers.print();
+    scores.print();
 }
 ```
 
@@ -761,12 +812,55 @@ fn main() {
 
 ```Java
 public class Main {
-    static <T extends Comparable<T>> T max(T a, T b) {
+
+    // Generic Function
+    static <T extends Comparable<T>> T maxValue(T a, T b) {
         return (a.compareTo(b) > 0) ? a : b;
     }
 
+    // Generic Class
+    static class Pair<T extends Comparable<T>> {
+        private T first;
+        private T second;
+
+        Pair(T first, T second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        T max() {
+            return (first.compareTo(second) > 0)
+                    ? first
+                    : second;
+        }
+
+        void print() {
+            System.out.println(
+                "First: " + first +
+                ", Second: " + second +
+                ", Max: " + max()
+            );
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(max(3, 7));
+
+        // Generic Function
+        System.out.println("Max Integer: "
+                + maxValue(10, 20));
+
+        System.out.println("Max Double: "
+                + maxValue(3.5, 2.8));
+
+        // Generic Class
+        Pair<Integer> numbers =
+                new Pair<>(15, 25);
+
+        Pair<Double> scores =
+                new Pair<>(85.5, 92.0);
+
+        numbers.print();
+        scores.print();
     }
 }
 ```
@@ -791,25 +885,109 @@ Comparison Language: Python
 
 ### Rust Example
 ```rust
-fn max<T: PartialOrd>(a: T, b: T) -> T {
-    if a > b { a } else { b }
+use std::fmt::Display;
+
+// Generic Function
+// T ต้องสามารถเปรียบเทียบได้และแสดงผลได้
+fn max_value<T: PartialOrd + Display>(a: T, b: T) -> T {
+    if a > b {
+        a
+    } else {
+        b
+    }
 }
+
+// Generic Struct
+#[derive(Debug)]
+struct Pair<T> {
+    first: T,
+    second: T,
+}
+
+impl<T: PartialOrd + Display> Pair<T> {
+    fn max(&self) -> &T {
+        if self.first > self.second {
+            &self.first
+        } else {
+            &self.second
+        }
+    }
+
+    fn print(&self) {
+        println!(
+            "First: {}, Second: {}, Max: {}",
+            self.first,
+            self.second,
+            self.max()
+        );
+    }
+}
+
 fn main() {
-    println!("{}", max(3, 7));
+    // Generic Function
+    println!("Max Integer: {}", max_value(10, 20));
+    println!("Max Float: {}", max_value(3.5, 2.8));
+
+    // Generic Struct
+    let numbers = Pair {
+        first: 15,
+        second: 25,
+    };
+
+    let scores = Pair {
+        first: 85.5,
+        second: 92.0,
+    };
+
+    numbers.print();
+    scores.print();
 }
 ```
 
 ### Python Example
 
 ```Python
-from typing import TypeVar
+from typing import TypeVar, Generic
 
 T = TypeVar('T')
 
+
+# Generic Function
 def max_value(a: T, b: T) -> T:
     return a if a > b else b
 
-print(max_value(3, 7))
+
+# Generic Class
+class Pair(Generic[T]):
+    def __init__(self, first: T, second: T):
+        self.first = first
+        self.second = second
+
+    def max(self) -> T:
+        return self.first if self.first > self.second else self.second
+
+    def print_pair(self):
+        print(
+            f"First: {self.first}, "
+            f"Second: {self.second}, "
+            f"Max: {self.max()}"
+        )
+
+
+def main():
+    # Generic Function
+    print("Max Integer:", max_value(10, 20))
+    print("Max Float:", max_value(3.5, 2.8))
+
+    # Generic Class
+    numbers = Pair(15, 25)
+    scores = Pair(85.5, 92.0)
+
+    numbers.print_pair()
+    scores.print_pair()
+
+
+main()
 ```
 
 ### Analysis
@@ -829,27 +1007,115 @@ Comparison Language: C++
 
 ### Rust Example
 ```rust
-fn max<T: PartialOrd>(a: T, b: T) -> T {
-    if a > b { a } else { b }
+use std::fmt::Display;
+
+// Generic Function
+// T ต้องสามารถเปรียบเทียบได้และแสดงผลได้
+fn max_value<T: PartialOrd + Display>(a: T, b: T) -> T {
+    if a > b {
+        a
+    } else {
+        b
+    }
+}
+
+// Generic Struct
+#[derive(Debug)]
+struct Pair<T> {
+    first: T,
+    second: T,
+}
+
+impl<T: PartialOrd + Display> Pair<T> {
+    fn max(&self) -> &T {
+        if self.first > self.second {
+            &self.first
+        } else {
+            &self.second
+        }
+    }
+
+    fn print(&self) {
+        println!(
+            "First: {}, Second: {}, Max: {}",
+            self.first,
+            self.second,
+            self.max()
+        );
+    }
 }
 
 fn main() {
-    println!("{}", max(3, 7));
+    // Generic Function
+    println!("Max Integer: {}", max_value(10, 20));
+    println!("Max Float: {}", max_value(3.5, 2.8));
+
+    // Generic Struct
+    let numbers = Pair {
+        first: 15,
+        second: 25,
+    };
+
+    let scores = Pair {
+        first: 85.5,
+        second: 92.0,
+    };
+
+    numbers.print();
+    scores.print();
 }
 ```
 
 ### C++ Example
 
-```c
+```C++
 #include <iostream>
 
+// Generic Function
 template <typename T>
 T max_value(T a, T b) {
     return a > b ? a : b;
 }
 
+// Generic Struct
+template <typename T>
+struct Pair {
+    T first;
+    T second;
+
+    T max() const {
+        return first > second ? first : second;
+    }
+
+    void print() const {
+        std::cout
+            << "First: " << first
+            << ", Second: " << second
+            << ", Max: " << max()
+            << '\n';
+    }
+};
+
 int main() {
-    std::cout << max_value(3, 7) << '\n';
+
+    // Generic Function
+    std::cout
+        << "Max Integer: "
+        << max_value(10, 20)
+        << '\n';
+
+    std::cout
+        << "Max Double: "
+        << max_value(3.5, 2.8)
+        << '\n';
+
+    // Generic Struct
+    Pair<int> numbers{15, 25};
+    Pair<double> scores{85.5, 92.0};
+
+    numbers.print();
+    scores.print();
+
     return 0;
 }
 ```
